@@ -53,8 +53,8 @@
                     <tbody>
                         <?php
                             $user_id = $_SESSION['auth_user']['user_id']; // The user logged in to the system.
-                            // $query = "SELECT * FROM `account` WHERE `user_type` = 'Customer' AND `user_status` != 'Archive' AND `user_id` != $user_id";
-                            $query = "CALL getcustomers($user_id)";
+                            $query = "SELECT * FROM `account` WHERE `user_type` = 'Customer' AND `user_status` != 'Archive' AND `user_id` != $user_id";
+                           // $query = "CALL getcustomers($user_id)";
                             $query_run = mysqli_query($con, $query);
                             if(mysqli_num_rows($query_run) > 0){
                                 foreach($query_run as $row){
