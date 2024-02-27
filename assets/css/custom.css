@@ -1,0 +1,10 @@
+body{
+    color: black;
+}
+.required:after {
+    content:" *";
+    color: red;
+}
+.btn.disabled, .btn:disabled, .btn-disabled{
+    cursor: not-allowed;
+}
