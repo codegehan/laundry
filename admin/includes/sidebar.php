@@ -12,6 +12,22 @@
                         <div class="sb-nav-link-icon text-dark"><i class="fas fa-bell"></i></div>
                         Notification
                     </a> -->
+                    <a class="nav-link  text-dark <?php if (strpos($_SERVER['PHP_SELF'], 'home/inventory.php') !== false)  { echo 'active'; } ?>" href="inventory.php">
+                        <div class="sb-nav-link-icon text-dark"><i class="fas fa-archive"></i></div>
+                        Inventory Management
+                    </a>
+                    <a class="nav-link  text-dark <?php if (strpos($_SERVER['PHP_SELF'], 'home/laundry.php') !== false)  { echo 'active'; } ?>" href="laundry.php">
+                        <div class="sb-nav-link-icon text-dark"><i class="fas fa-shirt"></i></div>
+                        Laundries
+                    </a>
+                    <a class="nav-link  text-dark <?php if (strpos($_SERVER['PHP_SELF'], 'home/sales.php') !== false)  { echo 'active'; } ?>" href="#">
+                        <div class="sb-nav-link-icon text-dark"><i class="fas fa-money-bill-wave"></i></div>
+                        Sales
+                    </a>
+                    <a class="nav-link  text-dark <?php if (strpos($_SERVER['PHP_SELF'], 'home/reports.php') !== false)  { echo 'active'; } ?>" href="#">
+                        <div class="sb-nav-link-icon text-dark"><i class="fas fa-file"></i></div>
+                        Reports
+                    </a>
                     <a class="nav-link text-dark <?php if (strpos($_SERVER['PHP_SELF'], 'home/user.php') !== false || strpos($_SERVER['PHP_SELF'], 'home/user_add.php') !== false || strpos($_SERVER['PHP_SELF'], 'home/user_edit.php') !== false || strpos($_SERVER['PHP_SELF'], 'home/user_view.php') !== false || strpos($_SERVER['PHP_SELF'], 'home/customer.php') !== false || strpos($_SERVER['PHP_SELF'], 'home/customer_add.php') !== false || strpos($_SERVER['PHP_SELF'], 'home/customer_edit.php') !== false || strpos($_SERVER['PHP_SELF'], 'home/customer_view.php') !== false)  {  } else{ echo'collapsed'; } ?>" href="#" data-bs-toggle="collapse" data-bs-target="#collapseAccounts" aria-expanded="false" aria-controls="collapseAccounts">
                         <div class="sb-nav-link-icon text-dark"><i class="fas fa-users"></i></div>
                         Accounts
@@ -23,10 +39,6 @@
                             <a class="nav-link text-dark <?php if (strpos($_SERVER['PHP_SELF'], 'home/user.php') !== false || strpos($_SERVER['PHP_SELF'], 'home/user_add.php') !== false || strpos($_SERVER['PHP_SELF'], 'home/user_edit.php') !== false || strpos($_SERVER['PHP_SELF'], 'home/user_view.php') !== false)  { echo 'active'; } ?>" href="user.php">Users</a>
                         </nav>
                     </div>
-                    <a class="nav-link  text-dark <?php if (strpos($_SERVER['PHP_SELF'], 'home/inventory.php') !== false)  { echo 'active'; } ?>" href="inventory.php">
-                        <div class="sb-nav-link-icon text-dark"><i class="fas fa-archive"></i></div>
-                        Inventory Management
-                    </a>
                 </div>
             </div>
         </nav>
