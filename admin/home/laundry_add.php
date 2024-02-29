@@ -1,4 +1,10 @@
 <?php include ('../includes/header.php'); ?>
+<?php 
+    $sql = "SELECT * FROM account WHERE user_id = $userID";
+    $sql_run = $con->query($sql);
+    $row = $sql_run->fetch_assoc();
+    $userloggedin = $row["fname"];
+?>
 <head>
     <!-- Select2 CSS and JS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
@@ -41,12 +47,14 @@
             <li class="breadcrumb-item active"><a href="./laundry" class="text-decoration-none">Laundy Management</a></li>
             <li class="breadcrumb-item">Add Laundry</li>
         </ol>
-        <form id="myForm" action="laundry_code.php" method="post" autocomplete="off" enctype="multipart/form-data" class="mb-4">
+        <!-- <form id="myForm" action="laundry_code.php" method="post" autocomplete="off" enctype="multipart/form-data" class="mb-4"> -->
+        <form id="laundry-form" class="mb-4">
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
                             <h4>Laundry form
+                                <h1></h1>
                                 <div class="float-end btn-disabled mr-2">
                                     <a class="btn btn-primary" href="./laundry"><i class="fas fa-arrow-left"></i> Back</a>
                                 </div>
@@ -57,33 +65,28 @@
                                 <div class="col-md-6 mb-3">
                                     <label for="transaction-code" class="required">Transaction Code</label>
                                     <input type="text" class="form-control" name="transaction-code" id="transaction-code" disabled>
-                                    <div id="transaction-code-error"></div>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <label for="pickup_date" class="required">Transaction Date</label>
-                                    <input type="date" value="<?=date('Y-m-d')?>" class="form-control" required>
-                                    <div id="inv_qty-error"></div>
+                                    <label for="transaction-date" class="required">Transaction Date</label>
+                                    <input type="date" value="<?=date('Y-m-d')?>" id="transaction-date" class="form-control" required>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label for="inv_name" class="required">Name</label>
-                                    <input type="text" class="form-control" placeholder="Enter Laundry Name" name="inv_name" id="inv_name" required>
-                                    <div id="inv_name-error"></div>
+                                    <label for="customer-name" class="required">Name</label>
+                                    <input type="text" class="form-control" placeholder="Enter Laundry Name" name="customer-name" id="customer-name" style="text-transform: uppercase;" required>
                                 </div>
 
                                 <div class="col-md-3 mb-3">
-                                    <label for="pickup_date" class="required">Pickup Date</label>
-                                    <input type="date" class="form-control" name="pickup_date" id="pickup_date" required>
-                                    <div id="inv_qty-error"></div>
+                                    <label for="pickup-ate" class="required">Pickup Date</label>
+                                    <input type="date" class="form-control" name="pickup-date" id="pickup-date" required>
                                 </div>
 
                                 <div class="col-md-3 mb-3">
                                     <div class="form-group">
-                                        <label for="pickup_time" class="required">Pickup Type</label>
-                                        <input type="time" class="form-control" name="pickup_time" id="pickup_time" required>
-                                        <div id="inv_status-error"></div>
+                                        <label for="pickup-time" class="required">Pickup Type</label>
+                                        <input type="time" class="form-control" name="pickup-time" id="pickup-time" required>
                                     </div>
                                 </div>
                             </div>
@@ -96,7 +99,7 @@
                                                 <th>Quantity</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="items-body">
                                             <?php 
                                                 $sql = "SELECT * FROM items";
                                                 $sql_run = mysqli_query($con, $sql);
@@ -124,7 +127,7 @@
                                             <label>Assigned Staff</label>
                                         </div>
                                         <div class="col-6">
-                                            <input type="text" class="form-control" value="Admin" disabled>
+                                            <input type="text" class="form-control" id="worker" value="<?=strtoupper($userloggedin)?>" disabled>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -132,7 +135,15 @@
                                             <label>Laundry Rate</label>
                                         </div>
                                         <div class="col-6">
-                                            <input type="text" class="form-control">
+                                            <select name="laundry-rate" id="laundry-rate" class="form-control w-75">
+                                                <?php 
+                                                    $sql = "SELECT * FROM laundryrate";
+                                                    $sql_run = mysqli_query($con, $sql);
+                                                    if(mysqli_num_rows($sql_run) > 0)
+                                                        foreach($sql_run as $row){ ?>
+                                                            <option value="<?=$row["rate"]?>" class="form-control"><?=strtoupper($row["description"])?></option>
+                                                <?php  } ?>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -140,7 +151,16 @@
                                             <label>Additional Service</label>
                                         </div>
                                         <div class="col-6">
-                                            <input type="text" class="form-control">
+                                            <select name="addtional-rate" id="addtional-rate" class="form-control w-75">
+                                            <option value="0.00" class="form-control"></option>
+                                                <?php 
+                                                    $sql = "SELECT * FROM addtionalrate";
+                                                    $sql_run = mysqli_query($con, $sql);
+                                                    if(mysqli_num_rows($sql_run) > 0)
+                                                        foreach($sql_run as $row){ ?>
+                                                            <option value="<?=$row["addrate"]?>" class="form-control"><?=strtoupper($row["adddescription"])?></option>
+                                                <?php  } ?>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -148,15 +168,15 @@
                                             <label>Weight (kg.)</label>
                                         </div>
                                         <div class="col-6">
-                                            <input type="text" class="form-control">
+                                            <input type="text" onchange="CalculatePayment()" id="weight-value" class="form-control">
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-6 text-start">
-                                            <label>Description</label>
+                                            <label>Remarks</label>
                                         </div>
                                         <div class="col-6">
-                                            <input type="text" class="form-control">
+                                            <textarea type="text" id="remarks" class="form-control w-75" rows="3"></textarea>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -164,7 +184,7 @@
                                             <label>Laundry Amount</label>
                                         </div>
                                         <div class="col-6">
-                                            <input type="text" class="form-control">
+                                            <input type="text" id="laundry-amount" class="form-control" disabled>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -172,7 +192,7 @@
                                             <label>Additional Fee</label>
                                         </div>
                                         <div class="col-6">
-                                            <input type="text" class="form-control">
+                                        <input type="text" id="additional-fee"class="form-control" disabled>
                                         </div>
                                     </div>
                                     
@@ -184,7 +204,7 @@
                                             <label>Total Amount</label>
                                         </div>
                                         <div class="col-6">
-                                            <input type="text" class="form-control" value="0.00" disabled>
+                                            <input type="text" id="total-amount" class="form-control" value="0.00" disabled>
                                         </div>
                                     </div>
 
@@ -210,7 +230,7 @@
                                             <label>Amount Tendered</label>
                                         </div>
                                         <div class="col-6">
-                                            <input type="text" class="form-control" value="0.00">
+                                            <input type="text" class="form-control" id="amount-tendered" onchange="CalculateForChange()" value="0.00">
                                         </div>
                                     </div>
                                     <div class="row">
@@ -218,7 +238,7 @@
                                             <label>Change</label>
                                         </div>
                                         <div class="col-6">
-                                            <input type="text" class="form-control" value="0.00" disabled>
+                                            <input type="text" class="form-control" id="amount-change" value="0.00" disabled>
                                         </div>
                                     </div>
 
@@ -228,8 +248,8 @@
 
                                     <div class="row">
                                         <div class="col-12 text-center">
-                                            <button type="button" class="btn btn-primary btn-size"><i class="fa-solid fa-download"></i> Place Laundry</button>
-                                            <button type="button" class="btn btn-danger btn-size"><i class="fa-solid fa-print"></i> Print</button>
+                                            <button type="button" class="btn btn-primary btn-size" onclick="PlaceLaundry()"><i class="fa-solid fa-download"></i> Place Laundry</button>
+                                            <button type="button" onclick="PrintReceipt()" class="btn btn-danger btn-size"><i class="fa-solid fa-print"></i> Print</button>
                                             <button type="button" class="btn btn-secondary btn-size"><i class="fa-solid fa-rotate-right"></i> Reset</button>
                                         </div>
                                     </div>
@@ -266,6 +286,10 @@
 </main>
 
 <script>
+    var form = document.getElementById('laundry-form');
+    form.addEventListener('keydown', function(event) {
+        if (event.keyCode === 13) { event.preventDefault(); }
+    });
     $(document).ready(function() {
         // Add an event listener to the modal's submit button
         $(document).on('click', '#addButton', function() {
@@ -308,7 +332,7 @@
     }
 
     function GenerateRandomCode(max) {
-        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        const characters = '0123456789';
         let result = '';
         const charactersLength = characters.length;
         for (let i = 0; i < max; i++) {
@@ -317,6 +341,104 @@
         return result;
     }
 
-    document.getElementById('transaction-code').value = GenerateRandomCode(20);
+    document.getElementById('transaction-code').value = GenerateRandomCode(2);
+
+    function CalculatePayment()
+    {
+        // for total laundry amount
+
+        var weight = document.getElementById("weight-value").value;
+        var laundryAmount = document.getElementById("laundry-amount");
+        var laundryRate = document.getElementById("laundry-rate").value;
+        var additionalFee = document.getElementById("additional-fee");
+
+        // for total amount to be payed
+        var totalAmount = document.getElementById("total-amount");
+        var additionalAmount = document.getElementById("addtional-rate").value;
+
+        var priceConversion = parseFloat(laundryRate) / 1000;
+        var laundry_Amount = parseFloat(weight) * 1000 * priceConversion;
+        laundryAmount.value = laundry_Amount;
+
+        var additional_Fee = parseFloat(additionalAmount);
+        additionalFee.value = additional_Fee
+
+        var total = parseFloat(laundry_Amount) + parseFloat(additional_Fee);
+        totalAmount.value = total.toFixed(2);
+
+        CalculateForChange();
+    }
+
+    function CalculateForChange()
+    {
+        var amounttendered = document.getElementById("amount-tendered").value;
+        var amountchange = document.getElementById("amount-change");
+        var totalAmount = document.getElementById("total-amount").value;
+
+        var total = parseFloat(amounttendered) - parseFloat(totalAmount);
+        amountchange.value = total.toFixed(2);
+
+    }
+    function PlaceLaundry()
+    {
+        var transCode = document.getElementById('transaction-code');
+        var transDate = document.getElementById('transaction-date');
+        var customerName = document.getElementById('customer-name');
+        var pickupDate = document.getElementById('pickup-date');
+        var pickupTime = document.getElementById('pickup-time');
+        var worker = document.getElementById('worker');
+        var rate = document.getElementById('laundry-rate');
+        var additional = document.getElementById('addtional-rate');
+        var weight = document.getElementById('weight-value');
+        var remarks = document.getElementById('remarks');
+        var laundryAmount = document.getElementById('laundry-amount');
+        var additionalFee = document.getElementById('additional-fee');
+        var totalAmount = document.getElementById('total-amount');
+        var paymentMethod = document.getElementById('payment-method');
+        var amountEntered = document.getElementById('amount-tendered');
+        var change = document.getElementById('amount-change');
+
+        var tableBody = document.getElementById('items-body');
+        var items = [];
+
+        for (var i = 0; i < tableBody.rows.length; i++) {
+            var cells = tableBody.rows[i].cells;
+            var key = cells[0].innerText.trim();
+            var value = cells[1].querySelector('input').value;
+            items.push({ item: key, quantity: value });
+        }
+        // console.log(items);
+        var jsonData = {
+            transCode: transCode.value,
+            transDate : transDate.value,
+            customerName : customerName.value,
+            pickupDate : pickupDate.value,
+            pickupTime : pickupTime.value,
+            worker : worker.value,
+            rate : rate.value,
+            additional : additional.value,
+            weight : weight.value,
+            remarks : remarks.value,
+            laundryAmount : laundryAmount.value,
+            additionalFee : additionalFee.value,
+            totalAmount : totalAmount.value,
+            paymentMethod : paymentMethod.value,
+            amountEntered : amountEntered.value,
+            change : change.value,
+            items : items,
+        }
+
+        PrintReceipt(jsonData);
+        console.log(jsonData)
+    }
+
+    function PrintReceipt(jsonData)
+    {
+        var query = 'data=' + encodeURIComponent(JSON.stringify(jsonData));
+        var iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.src = "../../assets/printables/invoice.html?" + query;
+        document.body.appendChild(iframe);
+    }
 </script>
 <?php include ('../includes/bottom.php'); ?>

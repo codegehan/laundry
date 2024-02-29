@@ -32,7 +32,7 @@
                             echo base_url . 'assets/files/users/' . $row['profile'];
                         } else { if($row['gender'] == 'Male') {echo base_url . 'assets/files/system/profile-male.png'; } else { echo base_url . 'assets/files/system/profile-female.png'; } }
                     ?>" style="height: 2.5rem; width: 2.5rem; margin-right: 1rem; border-radius: 100%;"/>
-                <?=$row['fname'] .' '. $row['lname']?>
+                <?=strtoupper($row['fname']) .' '. strtoupper($row['lname'])?>
             </a>
             <div class="dropdown-menu dropdown-menu-end border-0 shadow animated--fade-in-up mr-3" aria-labelledby="navbarDropdownUserImage">
                 <h6 class="dropdown-header d-flex align-items-center">
@@ -42,8 +42,8 @@
                         } else { if($row['gender'] == 'Male') {echo base_url . 'assets/files/system/profile-male.png'; } else { echo base_url . 'assets/files/system/profile-female.png'; } }
                     ?>" style="height: 2.5rem; width: 2.5rem; margin-right: 1rem; border-radius: 100%;" />
                     <div class="dropdown-user-details">
-                        <div class="dropdown-user-details-name"><?= $row['fname'] . ' ' . $row['mname'] . ' ' . $row['lname'] ?></div>
-                        <div class="dropdown-user-details-email"><?= $row['email']; ?></div>
+                        <div class="dropdown-user-details-name"><?= strtoupper($row['fname']) . ' ' . strtoupper($row['mname']) . ' ' . strtoupper($row['lname']) ?></div>
+                        <div class="dropdown-user-details-email"><?= strtolower($row['email']); ?></div>
                         <div class="dropdown-user-details-phone"><?= $row['phone']; ?></div>
                     </div>
                 </h6>

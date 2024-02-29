@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invoice Receipt</title>
+<style>
+    *{ font-family: 'Courier New', Courier, monospace;}
+    @media print {
+        body * { visibility: hidden; }
+        #printableArea, #printableArea * { visibility: visible; }
+        #printableArea {
+            width: 3in 5in;
+            break-inside: avoid;
+            font-size: 8px;
+        }
+        img{ width: 30%; }
+        .laundry-no-footer .large-font{ font-size: 28px; }
+        .laundry-no-footer .underlined-text{ text-decoration: underline; }
+    }
+    /* Styles for the invoice receipt */
+    #printableArea {
+        margin: 20px auto;
+        padding: 10px;
+        font-family: Arial, sans-serif;
+        font-size: 10px;
+    }
+    .invoice-header, .invoice-body, .invoice-footer { margin-bottom: 10px; }
+    .invoice-header { text-align: center; }
+    .invoice-body, .invoice-footer {
+        padding: 0 10px;
+    }
+    .laundry-no-footer{
+        margin-top: 30px;
+        text-align: center;
+    }
+    .hr{ border-top: 1px dashed #000; }
+    .defaults p{ margin: 1px; }
+    .items-right{
+        position: absolute;
+        right: 30px;
+    }
+</style>
+</head>
+<body onload="window.print()">
+<div id="printableArea">
+    <div class="invoice-header">    
+        <img src="logo.png" alt="LOGO HERE">
+    </div>
+    <div class="invoice-body">
+        <div class="defaults">
+            <p><strong>Name:</strong> <span id="customer-name"></span></p>
+            <p><strong>Date:</strong> <span id="date"></span></p>
+            <p><strong>Laundry No:</strong> <span id="laundry-no-header"></span></p>
+        </div>
+        <hr>
+        <div class="defaults">
+            <!-- <p><span id="item"></span> <span class="items-right">X <span id="item1"></span></span></p> -->
+            <div id="item-details"></div>
+        </div>
+        <br>
+        <div class="defaults">
+            <p>Teller: <span class="items-right"><span id="worker"></span></span></p>
+            <p>Rate: <span class="items-right"><span id="rate"></span></span></p>
+            <p>Additional: <span class="items-right"><span id="additional"></span></span></p>
+            <p>Weight: <span class="items-right"><span id="weight"></span> kgs.</span></p>
+            <p>Remarks: <span class="items-right"><span id="remarks"></span></span></p>
+            <p>Amount: <span class="items-right"><span id="amount"></span></span></p>
+            <p>Additional fee: <span class="items-right"><span id="additional-fee"></span></span></p>
+            <p>Cash: <span class="items-right"><span id="cash"></span></span></p>
+            <p>Change: <span class="items-right"><span id="change"></span></span></p>
+        </div>
+    </div>
+    <div class="invoice-footer">
+        <p><strong>Total:</strong> <span class="items-right">P <span id="total-amount"></span></span></p>
+    </div>
+    <div class="defaults">
+        <p>Pickup Date: <span id="pickup-date"></span></p>
+        <p style="margin-bottom: 50px;">Pickup Time: <span id="pickup-time"></span></p>
+        <p style="text-align: center;padding-bottom: 20px;">Thank you ! Please come again!</p>
+    </div>
+    <hr>
+    <div class="laundry-no-footer">
+        <p class="large-font"><strong>Laundry No:</strong></p>
+        <p class="large-font"><strong><span id="laundry-no-footer">MC10</span></strong></p>
+        <p>Pickup Date: <span class="underlined-text"><span id="pickup-date-footer"></span></span></p>
+        <p>Pickup Time: <span class="underlined-text"><span id="pickup-time-footer"></span></span></p>
+    </div>
+</div >
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        const jsonData = JSON.parse(new URLSearchParams(window.location.search).get('data'));
+
+        document.getElementById('customer-name').innerText = jsonData.customerName.toUpperCase();
+        document.getElementById('date').innerText = jsonData.transDate;
+        document.getElementById('laundry-no-header').innerText = jsonData.transCode;
+        document.getElementById('worker').innerText = jsonData.worker;
+        document.getElementById('rate').innerText = jsonData.rate;
+        document.getElementById('additional').innerText = jsonData.additional;
+        document.getElementById('weight').innerText = jsonData.weight;
+        document.getElementById('remarks').innerText = jsonData.remarks;
+        document.getElementById('amount').innerText = jsonData.laundryAmount;
+        document.getElementById('additional-fee').innerText = jsonData.additionalFee;
+        document.getElementById('cash').innerText = jsonData.amountEntered;
+        document.getElementById('change').innerText = jsonData.change;
+        document.getElementById('total-amount').innerText = jsonData.totalAmount;
+        document.getElementById('pickup-date').innerText = jsonData.pickupDate;
+        document.getElementById('pickup-time').innerText = jsonData.pickupTime;
+        document.getElementById('laundry-no-footer').innerText = jsonData.transCode;
+        document.getElementById('pickup-date-footer').innerText = jsonData.pickupDate;
+        document.getElementById('pickup-time-footer').innerText = jsonData.pickupTime;
+
+        var itemDetailsContainer = document.getElementById('item-details');
+        itemDetailsContainer.innerHTML = '';
+        jsonData.items.forEach(function(item) {
+        var itemNameSpan = document.createElement('span');
+        itemNameSpan.textContent = item.item;
+        var itemQuantitySpan = document.createElement('span');
+        itemQuantitySpan.className = "items-right";
+        itemQuantitySpan.textContent = ' X ' + item.quantity;
+        itemDetailsContainer.appendChild(itemNameSpan);
+        itemDetailsContainer.appendChild(itemQuantitySpan);
+        itemDetailsContainer.appendChild(document.createElement('br'));
+    });
+    });
+</script>
+</body>
+</html>
