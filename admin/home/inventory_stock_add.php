@@ -11,51 +11,50 @@
 </style>
 <main>
     <div class="container-fluid px-4">
-        <h1 class="mt-4">Add Inventory</h1>
+        <h1 class="mt-4">Add Stocks</h1>
         <ol class="breadcrumb mb-4 mt-3">
             <li class="breadcrumb-item active"><a href="../home" class="text-decoration-none">Dashboard</a></li>
             <li class="breadcrumb-item active"><a href="./inventory" class="text-decoration-none">Inventory Management</a></li>
-            <li class="breadcrumb-item">Add Inventory</li>
+            <li class="breadcrumb-item">Add Stocks</li>
         </ol>
         <form id="myForm" action="inventory_code.php" method="post" autocomplete="off" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Inventory form
+                            <h4>Stocks form
                                 <div class="float-end btn-disabled">
                                     <button type="submit" id="submit-btn" class="btn btn-success" onclick="return validateForm()"><i class="fas fa-plus"></i> Add</button>
                                 </div>
                                 <div class="float-end btn-disabled mr-2">
-                                    <a class="btn btn-primary" href="./inventory"><i class="fas fa-arrow-left"></i> Back</a>
+                                    <a class="btn btn-primary" href="inventory.php"><i class="fas fa-arrow-left"></i> Back</a>
                                 </div>
                             </h4>
                         </div>
                         <div class="card-body">
                             <div class="row">
+                                <input type="text" value="<?=$userID?>" name="worker" hidden>
                                 <div class="col-md-4 mb-3">
-                                    <label for="inv_name" class="required">Inventory Name</label>
-                                    <input type="text" class="form-control" placeholder="Enter Inventory Name" name="inv_name" id="inv_name" required>
-                                    <div id="inv_name-error"></div>
+                                    <label for="itemcode" class="required">Item Name</label>
+                                    <select name="itemcode" class="form-control" id="itemcode">
+                                        <option value="">-- Select item --</option>
+                                        <?php 
+                                            $sql = mysqli_query($con, "call itemslist()");
+                                            while ($row = mysqli_fetch_assoc($sql)) {
+                                                echo "<option value='" . $row["itemcode"] . "'>" . strtoupper($row["itemdescription"]) . "</option>";
+                                            }
+                                            
+                                        ?>
+                                    </select>
+                                    <div id="itemcode-error"></div>
                                 </div>
 
-                                <div class="col-md-4 mb-3">
-                                    <label for="inv_qty" class="required">Quantity</label>
-                                    <input type="number" class="form-control" placeholder="Enter Quantity" min="1" name="inv_qty" id="inv_qty" required>
-                                    <div id="inv_qty-error"></div>
+                                <div class="col-md-2 mb-3">
+                                    <label for="qty" class="required">Quantity</label>
+                                    <input type="number" class="form-control" placeholder="Enter Quantity" min="1" name="qty" id="qty" required>
+                                    <div id="qty-error"></div>
                                 </div>
 
-                                <div class="col-md-4 mb-3">
-                                    <div class="form-group">
-                                        <label for="inv_status" class="required">Status</label>
-                                        <select class="form-control" name="inv_status" id="inv_status" required>
-                                            <option value="" selected>Select Status</option>
-                                            <option value="Active">Active</option>
-                                            <option value="Inactive">Inactive</option>
-                                        </select>
-                                        <div id="inv_status-error"></div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -76,7 +75,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                            <button type="submit" name="add_inventory" id="editButton" class="btn btn-success">Yes</button>
+                            <button type="submit" name="add_stocks" id="editButton" class="btn btn-success">Yes</button>
                         </div>
                     </div>
                 </div>

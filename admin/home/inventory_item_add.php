@@ -11,21 +11,12 @@
 </style>
 <main>
     <div class="container-fluid px-4">
-        <h1 class="mt-4">Edit Inventory</h1>
+        <h1 class="mt-4">Add Item</h1>
         <ol class="breadcrumb mb-4 mt-3">
             <li class="breadcrumb-item active"><a href="../home" class="text-decoration-none">Dashboard</a></li>
-            <li class="breadcrumb-item active"><a href="./inventory" class="text-decoration-none">Inventory Mangement</a></li>
-            <li class="breadcrumb-item">Edit Inventory</li>
+            <li class="breadcrumb-item active"><a href="./inventory" class="text-decoration-none">Inventory Management</a></li>
+            <li class="breadcrumb-item">Add Item</li>
         </ol>
-        <?php
-            if(isset($_GET['id'])) {
-                $id = $_GET['id'];
-    
-            // Execute the first query and fetch all results
-            $sql = "CALL itemdetail('$id')";
-            $sql_run = mysqli_query($con, $sql);
-            $row = mysqli_fetch_assoc($sql_run);
-        ?>
         <form id="myForm" action="inventory_code.php" method="post" autocomplete="off" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-md-12">
@@ -33,64 +24,63 @@
                         <div class="card-header">
                             <h4>Inventory form
                                 <div class="float-end btn-disabled">
-                                    <button type="submit" class="btn btn-success" id="submit-btn" onclick="return validateForm()"><i class="fas fa-save"></i> Save</button>
-                                    <input type="hidden" name="inv_id" value="<?=$row['inv_id']?>">
+                                    <button type="submit" id="submit-btn" class="btn btn-success" onclick="return validateForm()"><i class="fas fa-plus"></i> Add</button>
                                 </div>
                                 <div class="float-end btn-disabled mr-2">
-                                    <a class="btn btn-primary" href="./inventory"><i class="fas fa-arrow-left"></i> Back</a>
+                                    <a class="btn btn-primary" href="inventory.php"><i class="fas fa-arrow-left"></i> Back</a>
                                 </div>
                             </h4>
                         </div>
                         <div class="card-body">
                             <div class="row">
+                                <input type="text" class="form-control" value="<?=$userID?>" id="worker" hidden name="worker">
                                 <div class="col-md-4 mb-3">
                                     <label for="itemcode" class="required">Item Code</label>
-                                    <input type="text" class="form-control"  name="itemcode" id="itemcode" value="<?=$row['itemcode']?>" required>
+                                    <input type="text" class="form-control" style="display: inline;" name="itemcode" id="itemcode" required>
                                     <div id="itemcode-error"></div>
                                 </div>
-
                                 <div class="col-md-4 mb-3">
                                     <label for="itemdescription" class="required">Item Name</label>
-                                    <input type="text" class="form-control" min="1" name="itemdescription" id="itemdescription" value="<?=$row['itemdescription']?>" required>
+                                    <input type="text" class="form-control" placeholder="Enter Item Name" name="itemdescription" id="itemdescription" required>
                                     <div id="itemdescription-error"></div>
                                 </div>
 
                                 <div class="col-md-4 mb-3">
                                     <label for="minqty" class="required">Min Quantity</label>
-                                    <input type="number" class="form-control" min="1" name="minqty" id="minqty" value="<?=$row['minqty']?>" required>
+                                    <input type="number" class="form-control" placeholder="Enter Quantity" min="1" name="minqty" id="minqty" required>
                                     <div id="minqty-error"></div>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-4 mb-3">
+                                    <label for="category" class="required">Category</label>
+                                    <select class="form-control" name="category" id="category" required>
+                                        <option value="">-- Select category --</option>
+                                        <?php
+                                            $sql = "call categorylists()";
+                                            $sql_run = mysqli_query($con, $sql);
+                                            if(mysqli_num_rows($sql_run) > 0)
+                                                foreach($sql_run as $row){ ?>
+                                                <option value="<?=$row["categorylist"]?>" class="form-control"><?=$row["categorylist"]?></option>
+                                            <?php  } ?> 
+                                    </select>
+                                    <div id="category-error"></div>
+                                </div>
+
+                                <div class="col-md-4 mb-3">
                                     <label for="dateexpired" class="required">Date Expired</label>
-                                    <input type="date" class="form-control" placeholder="Enter Quantity" min="1" name="dateexpired" id="dateexpired" value="<?=$row['dateexpired']?>" required>
+                                    <input type="date" class="form-control" placeholder="Enter Inventory Name" name="dateexpired" id="dateexpired">
                                     <div id="dateexpired-error"></div>
                                 </div>
-                                
-                                <div class="col-md-4 mb-3">
-                                    <label for="category" class="required">Category</label>
-                                    <select class="form-control" name ="category" id="category" required>
-                                    <option value="<?=$row['category']?>"><?=$row['category']?></option>
-                                    <?php
-                                        mysqli_next_result($con);
-                                        $sqlquery = "CALL categorylists()";
-                                        $sqlresult = mysqli_query($con, $sqlquery);
-                                            while ($rowcat = mysqli_fetch_assoc($sqlresult)) {
-                                                
-                                                echo "<option value='" . $rowcat["categorylist"] . "'>" . $rowcat["categorylist"] . "</option>";
-                                            }
-                                        }
-                                    ?>
-                                    </select>
-                                </div>
+
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Modal Edit -->
+            <!-- Modal Add -->
             <div class="modal fade" id="Modal_save" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -101,7 +91,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            Are you sure you want save?
+                            Are you sure you want add?
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
@@ -117,7 +107,7 @@
 <script>
     $(document).ready(function() {
         // Add an event listener to the modal's submit button
-        $(document).on('click', '#editButton', function() {
+        $(document).on('click', '#addButton', function() {
             // Set the form's checkValidity to true
             document.getElementById("myForm").checkValidity = function() {
                 return true;
@@ -138,6 +128,16 @@
             return true; // Allow the form to be submitted and display the browser's error messages
         }
     }
-</script>
+    function GenerateRandomCode(max) {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let result = '';
+        const charactersLength = characters.length;
+        for (let i = 0; i < max; i++) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+    }
 
+    document.getElementById('itemcode').value = GenerateRandomCode(10);
+</script>
 <?php include ('../includes/bottom.php'); ?>

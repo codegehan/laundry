@@ -10,11 +10,17 @@
 <main>
     <div class="container-fluid px-4">
         <h1 class="mt-4">Inventory Management
-            <a href="inventory_add" class="btn btn-success btn-icon-split float-end mt-2"> 
+            <a href="inventory_stock_add" class="btn btn-success btn-icon-split float-end mt-2"> 
                 <span class="icon text-white-50">
                     <i class="fas fa-plus"></i>
                 </span>
-                <span class="text">Add Inventory</span>
+                <span class="text">Add Stocks</span>
+            </a>
+            <a href="inventory_item_add" class="btn btn-success btn-icon-split float-end mt-2" style="margin-right: 10px;"> 
+                <span class="icon text-white-50">
+                    <i class="fas fa-plus"></i>
+                </span>
+                <span class="text">Add Item</span>
             </a>
         </h1>
         <ol class="breadcrumb mb-4">
@@ -30,52 +36,49 @@
                 <table class="table table-bordered table-hover text-center" id="datatablesSimple">
                     <thead>
                         <tr>
-                            <th>No.</th>
-                            <th>Inventory Name</th>
+                            <th>Item Code</th>
+                            <th>Item Name</th>
+                            <th>Category</th>
                             <th>Quantity</th>
-                            <th>Available</th>
-                            <th>Status</th>
                             <th>Buttons</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
-                            <th>No.</th>
-                            <th>Inventory Name</th>
+                            <th>Item Code</th>
+                            <th>Item Name</th>
+                            <th>Category</th>
                             <th>Quantity</th>
-                            <th>Available</th>
-                            <th>Status</th>
                             <th>Buttons</th>
                         </tr>
                     </tfoot>
                     <tbody>
                         <?php
-                            $query = "SELECT * FROM `inventory` WHERE `inv_status` != 'Archive'";
+                            $query = "call itemslist()";
                             $query_run = mysqli_query($con, $query);
                             if(mysqli_num_rows($query_run) > 0){
                                 foreach($query_run as $row){
                         ?>
                         <tr>
-                            <td><?= $row['inv_id']; ?></td>
-                            <td><?= $row['inv_name']; ?></td>
-                            <td><?= $row['inv_qty']; ?></td>
-                            <td><?= $row['inv_avail']; ?></td>
-                            <td><?= $row['inv_status']; ?></td>
+                            <td><?= $row['itemcode']; ?></td>
+                            <td><?= $row['itemdescription']; ?></td>
+                            <td><?= $row['category']; ?></td>
+                            <td><?= $row['qty']; ?></td>
                             <td>
                                 <div class="d-flex">
                                     <div class="col-md-4 mb-1" style="margin-right: 0.2rem">
-                                        <a href="inventory_view?id=<?=$row['inv_id']?>" class="btn btn-dark btn-icon-split" title="View"> 
+                                        <a href="inventory_view?id=<?=$row['itemcode']?>" class="btn btn-dark btn-icon-split" title="View"> 
                                             <span class="icon text-white-50"><i class="fas fa-eye"></i></span>
                                         </a>
                                     </div>
                                     <div class="col-md-4 mb-1" style="margin-right: 0.05rem">
-                                        <a href="inventory_edit?id=<?=$row['inv_id']?>" class="btn btn-success btn-icon-split" title="Edit"> 
+                                        <a href="inventory_edit?id=<?=$row['itemcode']?>" class="btn btn-success btn-icon-split" title="Edit"> 
                                             <span class="icon text-white-50"><i class="fas fa-edit"></i></span>
                                             <span class="text"></span>
                                         </a>
                                     </div>
                                     <div class="col-md-4">
-                                        <button type="button" data-toggle="modal" value="<?=$row['inv_id']; ?>" data-target="#Modal_delete_inventory" onclick="deleteModal(this)" class="btn btn-danger btn-icon-split" title="Delete">
+                                        <button type="button" data-toggle="modal" value="<?=$row['itemcode']; ?>" data-target="#Modal_delete_inventory" onclick="deleteModal(this)" class="btn btn-danger btn-icon-split" title="Delete">
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-trash"></i>
                                             </span>
