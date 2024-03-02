@@ -1,4 +1,14 @@
 <?php include ('authentication.php'); ?>
+<?php 
+    $message = "";
+    $sql = "SELECT itemdescription FROM inventory WHERE qty < minqty";
+    $sql_run = mysqli_query($con, $sql);
+    while($row = mysqli_fetch_assoc($sql_run)) {
+        $message .= strtoupper($row["itemdescription"]) . " ";
+        $_SESSION['status'] = "Items are running out of stock! -" . $message;
+        $_SESSION['status_code'] = "warning";
+    }   
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -24,6 +34,16 @@
         <!-- GlightBox -->
         <link href="<?php echo base_url ?>assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
     </head>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+        *{
+            font-family: "Poppins", sans-serif;
+            
+        }
+        body {
+            font-size: 12px;
+        }
+    </style>
     <body class="sb-nav-fixed" style="background-image: url('../../assets/files/system/background.jpg'); background-size: cover;">
         <?php
             include('topbar.php');

@@ -8,7 +8,7 @@
 
     // This is global hosting configuration.
     if(!defined('date')) define('date', date("Y-m-d h:i:s"));
-    if(!defined('base_url')) define('base_url','http://localhost/laundry/');
+    if(!defined('base_url')) define('base_url','http://26.69.213.34/laundry/');
     if(!defined('base_app')) define('base_app', str_replace('\\','/',__DIR__).'/' ); // Directory
     // if(!defined('emailuser')) define('emailuser', 'host.sendmailer@gmail.com'); // Email for GoogleAPI
     // if(!defined('emailpass')) define('emailpass', 'lzqrmanuoigtudvt'); // Password for GoogleAPI

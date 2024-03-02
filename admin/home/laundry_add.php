@@ -54,9 +54,8 @@
                     <div class="card">
                         <div class="card-header">
                             <h4>Laundry form
-                                <h1></h1>
                                 <div class="float-end btn-disabled mr-2">
-                                    <a class="btn btn-primary" href="./laundry"><i class="fas fa-arrow-left"></i> Back</a>
+                                    <a class="btn btn-primary btn-sm" href="./laundry"><i class="fas fa-arrow-left"></i> Back</a>
                                 </div>
                             </h4>
                         </div>
@@ -137,7 +136,7 @@
                                         <div class="col-6">
                                             <select name="laundry-rate" id="laundry-rate" class="form-control w-75">
                                                 <?php 
-                                                    $sql = "SELECT * FROM laundryrate";
+                                                    $sql = "SELECT * FROM laundryrate WHERE ratetypevalue = 1";
                                                     $sql_run = mysqli_query($con, $sql);
                                                     if(mysqli_num_rows($sql_run) > 0)
                                                         foreach($sql_run as $row){ ?>
@@ -153,12 +152,12 @@
                                         <div class="col-6">
                                             <select name="addtional-rate" id="addtional-rate" class="form-control w-75">
                                             <option value="0.00" class="form-control"></option>
-                                                <?php 
-                                                    $sql = "SELECT * FROM addtionalrate";
+                                                <?php
+                                                    $sql = "SELECT * FROM laundryrate WHERE ratetypevalue = 0";
                                                     $sql_run = mysqli_query($con, $sql);
                                                     if(mysqli_num_rows($sql_run) > 0)
                                                         foreach($sql_run as $row){ ?>
-                                                            <option value="<?=$row["addrate"]?>" class="form-control"><?=strtoupper($row["adddescription"])?></option>
+                                                            <option value="<?=$row["rate"]?>" class="form-control"><?=strtoupper($row["description"])?></option>
                                                 <?php  } ?>
                                             </select>
                                         </div>
@@ -176,7 +175,7 @@
                                             <label>Remarks</label>
                                         </div>
                                         <div class="col-6">
-                                            <textarea type="text" id="remarks" class="form-control w-75" rows="3"></textarea>
+                                            <textarea type="text" id="remarks" class="form-control w-75 text-uppercase" rows="3"></textarea>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -241,19 +240,16 @@
                                             <input type="text" class="form-control" id="amount-change" value="0.00" disabled>
                                         </div>
                                     </div>
-
                                     <br>
-                                    <br>
-                                    <br>
-
+                                    <div>
+                                        <strong><h3 class="text-center mb-4" id="laundrymessage"></h3></strong>
+                                    </div>
                                     <div class="row">
                                         <div class="col-12 text-center">
-                                            <button type="button" class="btn btn-primary btn-size" onclick="PlaceLaundry()"><i class="fa-solid fa-download"></i> Place Laundry</button>
-                                            <button type="button" onclick="PrintReceipt()" class="btn btn-danger btn-size"><i class="fa-solid fa-print"></i> Print</button>
-                                            <button type="button" class="btn btn-secondary btn-size"><i class="fa-solid fa-rotate-right"></i> Reset</button>
+                                            <button type="button" class="btn btn-primary btn-size btn-sm" onclick="PlaceLaundry()"><i class="fa-solid fa-download"></i> Place Laundry</button>
+                                            <button type="button" class="btn btn-secondary btn-size btn-sm" onclick="ResetLaundryForm()"><i class="fa-solid fa-rotate-right"></i> Reset</button>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                                                         
@@ -261,26 +257,7 @@
                     </div>
                 </div>
             </div>
-            <!-- Modal Add -->
-            <div class="modal fade" id="Modal_save" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Save changes</h5>
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            Are you sure you want add?
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                            <button type="submit" name="add_laundry" id="editButton" class="btn btn-success">Yes</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!-- <button type="submit" name="add_laundry" id="editButton" class="btn btn-success" hidden>Yes</button> -->
         </form>
     </div>
 </main>
@@ -345,27 +322,19 @@
 
     function CalculatePayment()
     {
-        // for total laundry amount
-
         var weight = document.getElementById("weight-value").value;
         var laundryAmount = document.getElementById("laundry-amount");
         var laundryRate = document.getElementById("laundry-rate").value;
         var additionalFee = document.getElementById("additional-fee");
-
-        // for total amount to be payed
         var totalAmount = document.getElementById("total-amount");
         var additionalAmount = document.getElementById("addtional-rate").value;
-
         var priceConversion = parseFloat(laundryRate) / 1000;
         var laundry_Amount = parseFloat(weight) * 1000 * priceConversion;
         laundryAmount.value = laundry_Amount;
-
         var additional_Fee = parseFloat(additionalAmount);
         additionalFee.value = additional_Fee
-
         var total = parseFloat(laundry_Amount) + parseFloat(additional_Fee);
         totalAmount.value = total.toFixed(2);
-
         CalculateForChange();
     }
 
@@ -374,10 +343,8 @@
         var amounttendered = document.getElementById("amount-tendered").value;
         var amountchange = document.getElementById("amount-change");
         var totalAmount = document.getElementById("total-amount").value;
-
         var total = parseFloat(amounttendered) - parseFloat(totalAmount);
         amountchange.value = total.toFixed(2);
-
     }
     function PlaceLaundry()
     {
@@ -397,17 +364,14 @@
         var paymentMethod = document.getElementById('payment-method');
         var amountEntered = document.getElementById('amount-tendered');
         var change = document.getElementById('amount-change');
-
         var tableBody = document.getElementById('items-body');
         var items = [];
-
         for (var i = 0; i < tableBody.rows.length; i++) {
             var cells = tableBody.rows[i].cells;
             var key = cells[0].innerText.trim();
             var value = cells[1].querySelector('input').value;
             items.push({ item: key, quantity: value });
         }
-        // console.log(items);
         var jsonData = {
             transCode: transCode.value,
             transDate : transDate.value,
@@ -427,11 +391,39 @@
             change : change.value,
             items : items,
         }
+        // To Print Receipt
+        
+        $.ajax({
+           url: "./laundry_code.php",
+           type: "POST",
+           contentType: "application/json",
+           data: JSON.stringify(jsonData),
+           success: function (response) {
+            // TO PRINT RECEIPT
+            //PrintReceipt(jsonData);
+            var result = JSON.parse(response);
+            $('#laundrymessage').text(result.message);
 
-        PrintReceipt(jsonData);
-        console.log(jsonData)
+            if (result.status === "error") {
+                $('#laundrymessage').css('color', 'red');
+            } else {
+                $('#laundrymessage').css('color', 'green');
+                $('#laundry-form')[0].reset();
+            }
+
+            setTimeout(function() {
+                $('#laundrymessage').text('');
+            }, 3000);
+           },   
+           error: function(xhr, status, error) {
+            console.error("Request Failed: ", error);
+           } 
+        });
     }
-
+    function ResetLaundryForm(){
+        $('#laundry-form')[0].reset();
+        document.getElementById('transaction-code').value = GenerateRandomCode(2);
+    }
     function PrintReceipt(jsonData)
     {
         var query = 'data=' + encodeURIComponent(JSON.stringify(jsonData));

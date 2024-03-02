@@ -9,20 +9,12 @@
             header("Location: " . base_url . "admin");
             exit(0);
         }
-        elseif ($_SESSION['auth_role'] == "Staff"){
+        else if ($_SESSION['auth_role'] == "Staff"){
             if(!isset($_SESSION['status'])){
             $_SESSION['status'] = "You are already logged in";
             $_SESSION['status_code'] = "error";
             }
-            header("Location: " . base_url . "staff");
-            exit(0);
-        }
-        elseif ($_SESSION['auth_role'] == "Customer"){
-            if(!isset($_SESSION['status'])){
-            $_SESSION['status'] = "You are already logged in";
-            $_SESSION['status_code'] = "error";
-            }
-            header("Location: " . base_url . "customer");
+            header("Location: " . base_url . "admin");
             exit(0);
         }
         else{
@@ -55,6 +47,34 @@
         <!-- Include Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     </head>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+        *{
+            animation: fade-in 1s ease-in-out forwards;
+            font-family: "Poppins", sans-serif;
+            font-weight: 500;
+            font-style: normal;
+        }
+        #login-logo{
+            animation: swipe 2.5s ease-in-out forwards;
+        }
+        @keyframes fade-in{
+            from{
+                opacity: 0;
+            } to {
+                opacity: 1;
+            }
+        }
+        @keyframes swipe{
+            from{
+                opacity: 0;
+                transform: translateX(-300px);
+            } to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
     <body class="bg-primary" style="background-image: url('assets/files/system/background.jpg'); background-repeat: no-repeat; background-size: cover;">
         <div id="layoutAuthentication">
             <div id="layoutAuthentication_content">
@@ -63,9 +83,11 @@
                         <div class="row d-flex align-items-center justify-content-center" style="min-height: 100vh;">
                             <div class="col-lg-6">
                                 <div class="card shadow-lg border-0 rounded-lg mt-5">
-                                    <div class="card-header">
-                                        <h5 class="text-center my-4">Alma Laundry Management System</h5>
-                                        <h4 class="text-center my-4">Login</h4>
+                                    <div class="card-header" style="background-color: #95b9b9;">
+                                        <h4 class="text-center my-4"><strong>ALMA LAUNDRY MANAGEMENT SYSTEM</strong></h4>
+                                        <div style="widht: 100%;" class="text-center" id="login-logo">
+                                            <img src="assets/files/system/loginlogo.png" style="width: 20%;" alt="Login Logo">
+                                        </div>
                                     </div>
                                     <div class="d-none" style="text-align: center;">
                                         <img class="zoom img-fluid img-bordered-sm" src="<?php echo base_url ?>assets/files/system/system_logo.jpg" alt="image" style="max-width: 160px; object-fit: cover;">

@@ -4,7 +4,7 @@
     if(isset($_POST['btn_login'])){
         $email = mysqli_real_escape_string($con, $_POST['email']);
         $password = mysqli_real_escape_string($con, $_POST['password']);
-        $login_query = "SELECT * FROM account WHERE `email` = '$email' AND password = '$password' AND `user_status` = 'Active' LIMIT 1";
+        $login_query = "SELECT * FROM account WHERE `email` = '$email' AND password = '$password' LIMIT 1";
         $login_query_run = mysqli_query($con, $login_query);
 
         if(mysqli_num_rows($login_query_run) > 0){
@@ -23,16 +23,11 @@
                 'user_email' =>$user_email,
             ];
 
-            if( $_SESSION['auth_role'] == 'Admin'){
+            if( $_SESSION['auth_role'] == 'Admin' ){
                 header("Location: " . base_url . "admin");
                 exit(0);
-            }
-            elseif( $_SESSION['auth_role'] == 'Staff'){
-                header("Location: " . base_url . "staff");
-                exit(0);
-            }
-            elseif( $_SESSION['auth_role'] == 'Customer'){
-                header("Location: " . base_url . "customer");
+            } else if ($_SESSION['auth_role'] == 'Staff') {
+                header("Location: " . base_url . "admin");
                 exit(0);
             }
         }

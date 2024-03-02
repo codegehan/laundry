@@ -33,25 +33,16 @@
                 DataTable Inventory Management
             </div>
             <div class="card-body">
-                <table class="table table-bordered table-hover text-center" id="datatablesSimple">
+                <table class="table table-bordered table-hover" id="datatablesSimple">
                     <thead>
                         <tr>
                             <th>Item Code</th>
                             <th>Item Name</th>
                             <th>Category</th>
                             <th>Quantity</th>
-                            <th>Buttons</th>
+                            <th></th>
                         </tr>
                     </thead>
-                    <tfoot>
-                        <tr>
-                            <th>Item Code</th>
-                            <th>Item Name</th>
-                            <th>Category</th>
-                            <th>Quantity</th>
-                            <th>Buttons</th>
-                        </tr>
-                    </tfoot>
                     <tbody>
                         <?php
                             $query = "call itemslist()";
@@ -65,26 +56,20 @@
                             <td><?= $row['category']; ?></td>
                             <td><?= $row['qty']; ?></td>
                             <td>
-                                <div class="d-flex">
-                                    <div class="col-md-4 mb-1" style="margin-right: 0.2rem">
-                                        <a href="inventory_view?id=<?=$row['itemcode']?>" class="btn btn-dark btn-icon-split" title="View"> 
-                                            <span class="icon text-white-50"><i class="fas fa-eye"></i></span>
-                                        </a>
-                                    </div>
-                                    <div class="col-md-4 mb-1" style="margin-right: 0.05rem">
-                                        <a href="inventory_edit?id=<?=$row['itemcode']?>" class="btn btn-success btn-icon-split" title="Edit"> 
-                                            <span class="icon text-white-50"><i class="fas fa-edit"></i></span>
-                                            <span class="text"></span>
-                                        </a>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <button type="button" data-toggle="modal" value="<?=$row['itemcode']; ?>" data-target="#Modal_delete_inventory" onclick="deleteModal(this)" class="btn btn-danger btn-icon-split" title="Delete">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-trash"></i>
-                                            </span>
-                                            <span class="text"></span>
-                                        </button>
-                                    </div>
+                                <div class="mb-1 text-center">
+                                    <a href="inventory_view?id=<?=$row['itemcode']?>" class="btn btn-dark btn-sm" title="View"> 
+                                        <span class="icon text-white-50"><i class="fas fa-eye"></i></span>
+                                    </a>
+                                    <a href="inventory_edit?id=<?=$row['itemcode']?>" class="btn btn-success btn-sm" title="Edit"> 
+                                        <span class="icon text-white-50"><i class="fas fa-edit"></i></span>
+                                        <span class="text"></span>
+                                    </a>
+                                    <button type="button" data-toggle="modal" value="<?=$row['itemcode']; ?>" data-target="#Modal_delete_inventory" onclick="deleteModal(this)" class="btn btn-danger btn-sm" title="Delete">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-trash"></i>
+                                        </span>
+                                        <span class="text"></span>
+                                    </button>
                                 </div>
                             </td>
                         </tr>

@@ -2,6 +2,7 @@
     if (!defined('DB_SERVER')){
         include ('../includes/authentication.php');
     }
+    $inputJSON = file_get_contents('php://input');
 
     // Add inventory
     if(isset($_POST["add_inventory"])) {
@@ -67,22 +68,22 @@
         }
     }
 
-    // Delete inventory
-    if(isset($_POST['delete_inventory'])) {
-        $inv_id= $_POST['inv_id'];
-        $query = "UPDATE `inventory` SET `inv_status` = 'Archive' WHERE inv_id = $inv_id ";
-        $query_run = mysqli_query($con, $query);
+    // // Delete inventory
+    // if(isset($_POST['delete_inventory'])) {
+    //     $inv_id= $_POST['inv_id'];
+    //     $query = "UPDATE `inventory` SET `inv_status` = 'Archive' WHERE inv_id = $inv_id ";
+    //     $query_run = mysqli_query($con, $query);
 
-        if($query_run) {
-            $_SESSION['status'] = "Inventory deleted successfully";
-            $_SESSION['status_code'] = "success";
-            header("Location: " . base_url . "admin/home/inventory");
-            exit(0);
-        } else {
-            $_SESSION['status'] = "Inventory was not delete";
-            $_SESSION['status_code'] = "error";
-            header("Location: " . base_url . "admin/home/inventory");
-            exit(0);
-        } 
-    }
+    //     if($query_run) {
+    //         $_SESSION['status'] = "Inventory deleted successfully";
+    //         $_SESSION['status_code'] = "success";
+    //         header("Location: " . base_url . "admin/home/inventory");
+    //         exit(0);
+    //     } else {
+    //         $_SESSION['status'] = "Inventory was not delete";
+    //         $_SESSION['status_code'] = "error";
+    //         header("Location: " . base_url . "admin/home/inventory");
+    //         exit(0);
+    //     } 
+    // }
 ?>

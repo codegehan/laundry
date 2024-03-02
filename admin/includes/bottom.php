@@ -80,23 +80,6 @@
             var lightboxInlineIframe = GLightbox({
                 selector: '.glightbox4'
             });
-
-            /* var exampleApi = GLightbox({ selector: null });
-            exampleApi.insertSlide({
-                href: 'https://picsum.photos/1200/800',
-            });
-            exampleApi.insertSlide({
-                width: '500px',
-                content: '<p>Example</p>'
-            });
-            exampleApi.insertSlide({
-                href: 'https://www.youtube.com/watch?v=WzqrwPhXmew',
-            });
-            exampleApi.insertSlide({
-                width: '200vw',
-                content: document.getElementById('inline-example')
-            });
-            exampleApi.open(); */
         </script>
     </body>
 </html>

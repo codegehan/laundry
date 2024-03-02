@@ -6,6 +6,10 @@
     .table th, .table td {
         white-space: nowrap;
     }
+
+    .adjusted-td td{
+        padding: 5px;
+    }
 </style>
 <main>
     <div class="container-fluid px-4">
@@ -21,7 +25,7 @@
             <li class="breadcrumb-item active"><a href="../home" class="text-decoration-none">Dashboard</a></li>
             <li class="breadcrumb-item">Laundry</li>
         </ol>
-        <div class="card mb-4">
+        <div class="card mb-4" style="max-height: 550px; overflow: scroll; font-size: 12px;">
             <div class="card-header">
                 <i class="fas fa-table me-1"></i>
                 DataTable Laundry
@@ -30,46 +34,51 @@
                 <table class="table table-bordered table-hover text-center" id="datatablesSimple">
                     <thead>
                         <tr>
-                            <th>Item Code</th>
-                            <th>Item Name</th>
-                            <th>Quantity</th>
-                            <th>Status</th>
-                            <th>Buttons</th>
+                            <th>Transaction Id</th>
+                            <th>Laundry Code</th>
+                            <th>Transaction Date</th>
+                            <th>Customer Name</th>
+                            <th>Pickup Date</th>
+                            <th>Pickup Time</th>
+                            <th>Total Amount</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                            $query = "SELECT * FROM `inventory` WHERE `status` != 0";
+                            $query = "call getlaundrylist()";
                             $query_run = mysqli_query($con, $query);
                             if(mysqli_num_rows($query_run) > 0){
                                 foreach($query_run as $row){
                         ?>
-                        <tr>
-                            <td><?= $row['itemcode']; ?></td>
-                            <td><?= $row['itemdescription']; ?></td>
-                            <td><?= $row['qty']; ?></td>
-                            <td><?= $row['status']; ?></td>
+                        <tr class="adjusted-td">
+                            <td><?= $row['transaction_id'];?></td>
+                            <td><?= $row['laundry_code'];?></td>
+                            <td><?= $row['transaction_date'];?></td>
+                            <td><?= $row['customer_name'];?></td>
+                            <td><?= $row['pickup_date'];?></td>
+                            <td><?= $row['pickup_time'];?></td>
+                            <td><?= $row['total_amount'];?></td>
                             <td>
-                                <div class="d-flex">
-                                    <div class="col-md-4 mb-1" style="margin-right: 0.2rem">
-                                        <a href="inventory_view?id=<?=$row['itemcode']?>" class="btn btn-dark btn-icon-split" title="View"> 
-                                            <span class="icon text-white-50"><i class="fas fa-eye"></i></span>
+                                <div class="d-flex text-center">
+                                    <!-- <div class="col-3 mb-1">
+                                        <a href="inventory_view?id=<?=$row['transaction_id']?>" class="btn btn-dark btn-sm" title="View"> 
+                                            <span class="icon text-white-50">View</i></span>
                                         </a>
-                                    </div>
-                                    <div class="col-md-4 mb-1" style="margin-right: 0.05rem">
-                                        <a href="inventory_edit?id=<?=$row['itemcode']?>" class="btn btn-success btn-icon-split" title="Edit"> 
-                                            <span class="icon text-white-50"><i class="fas fa-edit"></i></span>
+                                    </div> -->
+                                    <div class="col-3 mb-1 ms-3">
+                                        <a href="laundry_validate?id=<?=$row['transaction_id']?>&worker=<?=$userID?>" style="border-radius: 50%;" class="btn btn-success btn-sm" title="Edit"> 
+                                            <span class="icon text-white-50"><i class="fa fa-circle-check"></i></span>
                                             <span class="text"></span>
                                         </a>
                                     </div>
-                                    <div class="col-md-4">
-                                        <button type="button" data-toggle="modal" value="<?=$row['itemcode']; ?>" data-target="#Modal_delete_inventory" onclick="deleteModal(this)" class="btn btn-danger btn-icon-split" title="Delete">
+                                    <!-- <div class="col-md-3">
+                                        <button type="button" data-toggle="modal" value="<?=$row['transaction_id']; ?>" data-target="#Modal_delete_inventory" onclick="deleteModal(this)" class="btn btn-danger btn-sm" title="Delete">
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-trash"></i>
                                             </span>
                                             <span class="text"></span>
                                         </button>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </td>
                         </tr>
