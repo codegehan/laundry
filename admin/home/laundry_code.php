@@ -10,7 +10,6 @@
     if (isset($jsonData)) {
         $totalAmount = $jsonData->totalAmount;
         $amountEntered = $jsonData->amountEntered;
-
         if ($amountEntered < $totalAmount) {
             $result['message'] = "Payment entered must be valid";
             $result['status'] = "error";

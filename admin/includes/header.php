@@ -1,14 +1,5 @@
 <?php include ('authentication.php'); ?>
-<?php 
-    $message = "";
-    $sql = "SELECT itemdescription FROM inventory WHERE qty < minqty";
-    $sql_run = mysqli_query($con, $sql);
-    while($row = mysqli_fetch_assoc($sql_run)) {
-        $message .= strtoupper($row["itemdescription"]) . " ";
-        $_SESSION['status'] = "Items are running out of stock! -" . $message;
-        $_SESSION['status_code'] = "warning";
-    }   
-?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>

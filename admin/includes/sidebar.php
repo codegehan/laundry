@@ -8,26 +8,32 @@
                         <div class="sb-nav-link-icon text-dark"><i class="fas fa-tachometer-alt"></i></div>
                         Dashboard
                     </a>
-                    <!-- <a class="nav-link  text-dark <?php if (strpos($_SERVER['PHP_SELF'], 'home/notification.php') !== false)  { echo 'active'; } ?>" href="notification">
-                        <div class="sb-nav-link-icon text-dark"><i class="fas fa-bell"></i></div>
-                        Notification
-                    </a> -->
                     <a class="nav-link  text-dark <?php if (strpos($_SERVER['PHP_SELF'], 'home/inventory.php') !== false)  { echo 'active'; } ?>" href="inventory.php">
                         <div class="sb-nav-link-icon text-dark"><i class="fas fa-archive"></i></div>
                         Inventory
                     </a>
-                    <a class="nav-link  text-dark <?php if (strpos($_SERVER['PHP_SELF'], 'home/laundry.php') !== false)  { echo 'active'; } ?>" href="laundry.php">
-                        <div class="sb-nav-link-icon text-dark"><i class="fas fa-shirt"></i></div>
-                        Laundries
-                    </a>
-                    <a class="nav-link  text-dark <?php if (strpos($_SERVER['PHP_SELF'], 'home/sales.php') !== false)  { echo 'active'; } ?>" href="#">
+                    <!-- ---------------------------------------------------------------------->
+                    <a class="nav-link text-dark <?php if (strpos($_SERVER['PHP_SELF'], 'home/laundry.php') !== false)  { echo'collapsed'; } ?>" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLaundry" aria-expanded="false" aria-controls="collapseLaundry">
+                            <div class="sb-nav-link-icon text-dark"><i class="fas fa-users"></i></div>
+                            Laundry
+                            <div class="sb-sidenav-collapse-arrow text-dark"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapseLaundry" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link text-dark <?php if (strpos($_SERVER['PHP_SELF'], 'home/laundry_pending.php') !== false)  { echo 'active'; } ?>" href="laundry_pending.php">Pending</a>
+                                <a class="nav-link text-dark <?php if (strpos($_SERVER['PHP_SELF'], 'home/laundry_pay.php') !== false)  { echo 'active'; } ?>" href="laundry_pay.php">Unpaid</a>
+                                <a class="nav-link text-dark <?php if (strpos($_SERVER['PHP_SELF'], 'home/laundry_release.php') !== false)  { echo 'active'; } ?>" href="laundry_release.php">Ready to Release</a>
+                            </nav>
+                        </div>
+                    <!-- ---------------------------------------------------------------------->
+                    <a class="nav-link  text-dark <?php if (strpos($_SERVER['PHP_SELF'], 'home/sales.php') !== false)  { echo 'active'; } ?>" href="sales.php">
                         <div class="sb-nav-link-icon text-dark"><i class="fas fa-money-bill-wave"></i></div>
                         Sales
                     </a>
-                    <a class="nav-link  text-dark <?php if (strpos($_SERVER['PHP_SELF'], 'home/reports.php') !== false)  { echo 'active'; } ?>" href="#">
+                    <!-- <a class="nav-link  text-dark <?php if (strpos($_SERVER['PHP_SELF'], 'home/reports.php') !== false)  { echo 'active'; } ?>" href="#">
                         <div class="sb-nav-link-icon text-dark"><i class="fas fa-file"></i></div>
                         Reports
-                    </a>
+                    </a> -->
                     <?php 
                         $userrole = $_SESSION["auth_role"];
 

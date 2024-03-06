@@ -7,7 +7,6 @@
             title: "<?php echo $_SESSION['status']; ?>",
             icon: "<?php echo $_SESSION['status_code']; ?>",
             timer: 3000,
-            // button: <?php echo $_SESSION['button']; ?>,
             button: true,
             content: {
                 element: "span",

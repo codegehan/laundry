@@ -261,7 +261,7 @@
         </form>
     </div>
 </main>
-
+<?php include "../../message.php";?>
 <script>
     var form = document.getElementById('laundry-form');
     form.addEventListener('keydown', function(event) {
@@ -372,11 +372,20 @@
             var value = cells[1].querySelector('input').value;
             items.push({ item: key, quantity: value });
         }
+
+        if (customerName.value === "" || pickupDate.value === "" || pickupTime.value === "" || weight.value === "" || paymentMethod.value === "#" || amountEntered.value === "") {
+            $('#laundrymessage').text("Please fill all required fields!");
+            $('#laundrymessage').css('color', 'red');
+            setTimeout(() => {
+                $('#laundrymessage').text("");
+            }, 3000);
+            return;
+        }
         var jsonData = {
             transCode: transCode.value,
             transDate : transDate.value,
             customerName : customerName.value,
-            pickupDate : pickupDate.value,
+            pickupDate : pickupDate.value, 
             pickupTime : pickupTime.value,
             worker : worker.value,
             rate : rate.value,
@@ -391,8 +400,6 @@
             change : change.value,
             items : items,
         }
-        // To Print Receipt
-        
         $.ajax({
            url: "./laundry_code.php",
            type: "POST",
@@ -402,6 +409,7 @@
             // TO PRINT RECEIPT
             //PrintReceipt(jsonData);
             var result = JSON.parse(response);
+            
             $('#laundrymessage').text(result.message);
 
             if (result.status === "error") {
@@ -409,6 +417,9 @@
             } else {
                 $('#laundrymessage').css('color', 'green');
                 $('#laundry-form')[0].reset();
+                setTimeout(() => {
+                    PrintReceipt(jsonData);
+                }, 2500);
             }
 
             setTimeout(function() {

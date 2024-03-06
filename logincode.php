@@ -8,6 +8,7 @@
         $login_query_run = mysqli_query($con, $login_query);
 
         if(mysqli_num_rows($login_query_run) > 0){
+            $query = mysqli_query($con, "UPDATE account SET lastlogin = CURRENT_TIMESTAMP() WHERE `email` = '$email' AND password = '$password'");
             foreach($login_query_run as $data){
                 $user_id = $data['user_id'];
                 $full_name = $data['fname'].' '.$data['lname'];
