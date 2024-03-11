@@ -1,5 +1,5 @@
 <?php
-    if(isset($_SESSION['status']) && $_SESSION['status_code'] !='' ){
+    if(isset($_SESSION['status']) && $_SESSION['status_code'] != '' ){
 ?>
 <script>
     setTimeout(function() {
@@ -7,7 +7,7 @@
             title: "<?php echo $_SESSION['status']; ?>",
             icon: "<?php echo $_SESSION['status_code']; ?>",
             timer: 3000,
-            button: true,
+            button: false,
             content: {
                 element: "span",
                 attributes: {

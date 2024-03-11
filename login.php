@@ -17,15 +17,7 @@
             header("Location: " . base_url . "admin");
             exit(0);
         }
-        else{
-            if(!isset($_SESSION['status'])){
-                $_SESSION['status'] = "Login first to access dashboard";
-                $_SESSION['status_code'] = "error";
-            }
-            header("Location: " . base_url . "login");
-            exit(0);
-        }
-    }
+    } 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -89,9 +81,9 @@
                                             <img src="assets/files/system/loginlogo.png" style="width: 20%;" alt="Login Logo">
                                         </div>
                                     </div>
-                                    <div class="d-none" style="text-align: center;">
+                                    <!-- <div class="d-none" style="text-align: center;">
                                         <img class="zoom img-fluid img-bordered-sm" src="<?php echo base_url ?>assets/files/system/system_logo.jpg" alt="image" style="max-width: 160px; object-fit: cover;">
-                                    </div>
+                                    </div> -->
                                     <div class="card-body">
                                         <form action="logincode.php" method="POST">
                                             <div class="form-floating mb-3">

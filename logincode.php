@@ -33,9 +33,9 @@
             }
         }
         else {
-            $_SESSION['status'] = "Invalid Email or Password";
-            $_SESSION['status_code'] = "warning";
-            header("Location: " . base_url . "login");
+            $msg = "Invalid email and password";
+            echo "<script>alert('$msg');</script>";
+            echo "<script>window.location='" . base_url . "login';</script>";
             exit(0);
         }
     }
@@ -43,7 +43,6 @@
         $_SESSION['status'] = "You are not allowed to access this site";
         $_SESSION['status_code'] = "error";
         header("Location: " . base_url . "login");
-        
         exit(0);
     }
 
